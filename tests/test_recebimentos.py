@@ -1,12 +1,13 @@
 # the inclusion of the tests module is not meant to offer best practices for
 # testing in general, but rather to support the `find_packages` example in
 # setup.py that excludes installing the "tests" package
-import unittest
-import pickle
 import datetime
-import random    
-from pjbank import Boleto
+import random
+import unittest
+
 from dados import dados
+from pjbank import Boleto
+
 
 class DadosTeste(object):
     def __init__(self):
@@ -31,7 +32,7 @@ class BoletoTestCase(unittest.TestCase):
 
     def emitir_boleto(self, dados, random_pedido=False):
         if random_pedido:
-            dados['pedido_numero'] = random.randint(1000,99999)
+            dados['pedido_numero'] = random.randint(1000, 99999)
         return self.boleto.emitir(dados) 
 
     def test_emitir_boleto(self):
@@ -55,9 +56,8 @@ class BoletoTestCase(unittest.TestCase):
         dados_emis['valor'] = 50.50
         dados_emis['pedido_numero'] = bol.r['pedido_numero']
         bol2 = self.emitir_boleto(dados_emis, False)
+        bol2.r = bol2.json()
         bol.r = bol.json()
         self.assertEqual(bol.r["linkBoleto"], bol2.r["linkBoleto"])
         self.assertEqual(bol.r["linkGrupo"], bol2.r["linkGrupo"])
-        self.assertEqual(bol.r["linhaDigitavel"], bol2.r["linhaDigitavel"])
-
-        
+        self.assertNotEqual(bol.r["linhaDigitavel"], bol2.r["linhaDigitavel"])

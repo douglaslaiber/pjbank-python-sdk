@@ -5,6 +5,7 @@ from pjbank.api import PJBankAPI
 from pjbank.recebimentos.boleto import Boleto
 from pjbank.recebimentos.cartaocredito import CartaoCredito
 
+
 class ContaDigital(PJBankAPI):
     """docstring for ContaDigital."""
     def __init__(self, credencial=None, chave=None, webhook_chave=None):

@@ -4,6 +4,7 @@
 import requests
 from pjbank.config import __apiurls__ as apiurls
 
+
 class PJBankAPI(object):
     """Classe representando a API PJBank."""
 
@@ -39,9 +40,9 @@ class PJBankAPI(object):
     def dev(self, dev=True):
         if type(dev) == str and dev == 'producao':
             dev = False
-        if dev == True:
+        if dev is True:
             self._modo = 'sandbox'
-        elif dev == False:
+        elif dev is False:
             self._modo = 'producao'
         self._url = apiurls.get(self._modo)
         return self.modo   
@@ -53,19 +54,25 @@ class PJBankAPI(object):
     @property
     def headers_content(self):
         return {"Content-Type": self._content_type}
-    
+
     def _get_endpoint(self, recursos=None):
-        base = [self._url, self._endpoint_base]
+        endpoin_split = self._endpoint_base.split('/')
+        base = [self._url, endpoin_split[0]]
         if self.credencial:
             base.extend([self.credencial])
+
+        if len(endpoin_split) > 1:
+            base.append(endpoin_split[1])
+
         if recursos:
             base.extend(recursos)
-        url = '/'.join(base)
+        url = '/'.join(map(str, base))
         return url
 
     def _request(self, metodo, endpoint, headers, dados=None, params=None):
         url = self._get_endpoint(endpoint)
-        response = requests.request(metodo, url, json=dados, headers=headers, params=params)
+        response = requests.request(
+            metodo, url, json=dados, headers=headers, params=params)
         return response
 
     def _get(self, endpoint, headers, params=None):

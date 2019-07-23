@@ -3,6 +3,7 @@
 
 from pjbank.contadigital import ContaDigital
 
+
 class Credenciamento(ContaDigital):
     """docstring for Credenciamento."""
     def __init__(self):

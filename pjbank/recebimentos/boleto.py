@@ -3,6 +3,7 @@
 
 from pjbank.recebimentos import Recebimentos
 
+
 class Boleto(Recebimentos):
     """docstring for Boleto."""
     def __init__(self, credencial=None, chave=None):
