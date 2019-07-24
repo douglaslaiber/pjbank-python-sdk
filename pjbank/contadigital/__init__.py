@@ -4,6 +4,7 @@
 from pjbank.api import PJBankAPI
 from pjbank.recebimentos.boleto import Boleto
 from pjbank.recebimentos.cartaocredito import CartaoCredito
+from pjbank.contadigital.transacoes import Transacoes
 
 
 class ContaDigital(PJBankAPI):
@@ -13,6 +14,7 @@ class ContaDigital(PJBankAPI):
         self._endpoint_base = "contadigital"
         self._webhook_chave = webhook_chave
         self._recebimentos()
+        self._transacoes()
 
     def _recebimentos(self):
         self.boleto = Boleto(self.credencial, self.chave)
@@ -22,6 +24,11 @@ class ContaDigital(PJBankAPI):
         self.cartao = CartaoCredito(self.credencial, self.chave)
         self.cartao._endpoint_base = "contadigital/recebimentos"
         self.cartao._chave_headers = "X-CHAVE-CONTA"
+
+    def _transacoes(self):
+        self.transacoes = Transacoes(self.credencial, self.chave)
+        self.transacoes._endpoint_base = "contadigital/recebimentos"
+        self.transacoes._chave_headers = "X-CHAVE-CONTA"
 
     def automatico(f):
         def wrapper(self, *args, **kwargs):
